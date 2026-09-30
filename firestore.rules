@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /trackers/{studentUid} {
+      allow read: if request.auth != null
+        && request.auth.uid == "nRthXai0a8XziV0qlUfYYRH6L4g1"
+        && studentUid == request.auth.uid;
+      allow create, update: if request.auth != null
+        && request.auth.uid == "nRthXai0a8XziV0qlUfYYRH6L4g1"
+        && studentUid == request.auth.uid
+        && request.resource.data.keys().hasOnly(["data", "updatedAt"])
+        && request.resource.data.keys().hasAll(["data", "updatedAt"])
+        && request.resource.data.data is map
+        && request.resource.data.updatedAt is timestamp;
+    }
+  }
+}
